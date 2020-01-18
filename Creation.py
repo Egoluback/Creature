@@ -63,10 +63,10 @@ class Creation:
     def Multiply(self, world):
         directionX = random.randint(-5, 5)
         while self.x + directionX > SIZE[0] - 1 or self.x + directionX < 1:
-            directionX = random.randint(-1, 1)
+            directionX = random.randint(-5, 5)
         directionY = random.randint(-5, 5)
         while self.y + directionY > SIZE[1] - 1 or self.y + directionY < 1:
-            directionY = random.randint(-1, 1)
+            directionY = random.randint(-5, 5)
         
 
         if (len(self.inherited_mutation) > 0 and len(self.mutation) == 0):
