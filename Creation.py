@@ -117,11 +117,11 @@ class Creation:
         eatResult = self.Eat(world)
         world = eatResult[0]
 
+        log.append(["eat", [self.x, self.y, eatResult[1]]])
+        
         if (self.health <= 0):
             log.append(["death"])
             return [world, log]
-
-        log.append(["eat", [self.x, self.y, eatResult[1]]])
 
         if (eatResult[1] == -1):
             self.hunger -= 10 * 1 / self.strength
