@@ -12,7 +12,7 @@ colorama.init()
 
 pos = lambda x, y: '\x1b[%d;%dH' % (x, y)
 
-class Creation:
+class Creature:
     def __init__(self, x, y, mutation = {}):
         self.x = x
         self.y = y
@@ -72,7 +72,7 @@ class Creation:
         if (len(self.inherited_mutation) > 0 and len(self.mutation) == 0):
             self.mutation = self.inherited_mutation
 
-        world[self.x + directionX][self.y + directionY].append(Creation(self.x + directionX, self.y + directionY, self.mutation))
+        world[self.x + directionX][self.y + directionY].append(Creature(self.x + directionX, self.y + directionY, self.mutation))
 
         self.mutation = {}
 
