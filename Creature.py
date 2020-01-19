@@ -4,10 +4,6 @@ from Food import Food
 from const import *
 from colorama import Fore, Back, Style
 
-FORES = [ Fore.BLACK, Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.BLUE, Fore.MAGENTA, Fore.CYAN, Fore.WHITE ]
-BACKS = [ Back.BLACK, Back.RED, Back.GREEN, Back.YELLOW, Back.BLUE, Back.MAGENTA, Back.CYAN, Back.WHITE ]
-STYLES = [ Style.DIM, Style.NORMAL, Style.BRIGHT ]
-
 colorama.init()
 
 pos = lambda x, y: '\x1b[%d;%dH' % (x, y)
@@ -127,12 +123,12 @@ class Creature:
             self.hunger -= 10 * 1 / self.strength
         if (stepNum < 10):
             self.Go()
+            log.append(["go", [self.x, self.y]])
         elif (stepNum > 10):
             if (random.randint(0, 5) == 0): self.GenerateMutation()
             multiplyResult = self.Multiply(world)
             world = multiplyResult[0]
             log.append(["multiply", multiplyResult[1]])
-            # print('%s%s%s%s%s' % (pos(15, 80), Fore.YELLOW, Back.BLACK, Style.BRIGHT, "look at me"), end='')
 
         self.age += 1
 
@@ -147,18 +143,13 @@ class Creature:
     def Eat(self, world):
         index = -1
         for element in world[self.x][self.y]:
-            # print(element)
-            # input()
             if (isinstance(element, Food)):
                 if (self.hunger + element.getType()["power"] * self.spaciousness <= 100):
                     self.hunger += element.getType()["power"] * self.spaciousness
                 else:
                     self.hunger = 100
-                # print(self.hunger)
                 world[self.x][self.y].remove(element)
                 index = 0
-                # input()
-            # print("asdadadsdsads")
         return [world, index]
             
     def Die(self):

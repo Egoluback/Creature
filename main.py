@@ -7,17 +7,13 @@ from Creature import Creature
 from Food import Food
 from const import *
 
-FORES = [ Fore.BLACK, Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.BLUE, Fore.MAGENTA, Fore.CYAN, Fore.WHITE ]
-BACKS = [ Back.BLACK, Back.RED, Back.GREEN, Back.YELLOW, Back.BLUE, Back.MAGENTA, Back.CYAN, Back.WHITE ]
-STYLES = [ Style.DIM, Style.NORMAL, Style.BRIGHT ]
-
 colorama.init()
 
 world = []
 
 pos = lambda x, y: '\x1b[%d;%dH' % (x, y)
 
-world = World(10, [0, 4])
+world = World(10, [0, 1])
 
 world.Create()
 world.Print()
@@ -25,6 +21,7 @@ world.Print()
 iterationCount = 0
 
 while True:
+    toPrintObj = []
     world_session = world.get_World()
     creaturesIndexes_session = world.get_CreaturesIndexes()
     foodIndexes_session = world.get_FoodIndexes()
@@ -44,8 +41,12 @@ while True:
                         continue
                     elif (logEl[0] == "multiply"):
                         creaturesIndexes_session.append(logEl[1])
+                    elif (logEl[0] == "eat"):
+                        toPrintObj.append(logEl[1])
+                    elif (logEl[0] == "go"):
+                        toPrintObj.append(logEl[1])
                 
-    if (len(creaturesIndexes_session) >= 120):
+    if (len(creaturesIndexes_session) >= 700):
         for creationIndex in creaturesIndexes_session:
             for element in world_session[creationIndex[0]][creationIndex[1]]:
                 if (isinstance(element, Creature)):
@@ -58,8 +59,7 @@ while True:
                         continue
 
 
-    world.PrintObjects()
-    # printcreations()
+    world.PrintObjects(toPrintObj)
 
     world.set_World(world_session)
     world.set_CreaturesIndexes(creaturesIndexes_session)

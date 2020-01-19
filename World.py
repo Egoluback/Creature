@@ -1,13 +1,11 @@
 import colorama, random, time
 
+from colorama import Fore, Back, Style
+
 from const import *
 from Creature import Creature
 from Food import Food
-from colorama import Fore, Back, Style
-
-FORES = [ Fore.BLACK, Fore.RED, Fore.GREEN, Fore.YELLOW, Fore.BLUE, Fore.MAGENTA, Fore.CYAN, Fore.WHITE ]
-BACKS = [ Back.BLACK, Back.RED, Back.GREEN, Back.YELLOW, Back.BLUE, Back.MAGENTA, Back.CYAN, Back.WHITE ]
-STYLES = [ Style.DIM, Style.NORMAL, Style.BRIGHT ]
+from Entourage import Entourage
 
 colorama.init()
 
@@ -28,6 +26,7 @@ class World:
             toAddY = []
             for j in range(SIZE[1]):
                 toAdd = []
+                toAdd.append(Entourage(random.choice(ENTOURAGE_TYPES)))
 
                 if (random.randint(self.foodChance[0], self.foodChance[1]) == 0):
                     self.FoodIndexes.append([i, j])
@@ -45,20 +44,32 @@ class World:
             
             self.CreaturesIndexes.append([posX, posY])
     
-    def PrintObjects(self):
+    def PrintObjects(self, changesPos = []):
         for i in range(SIZE[0]):
             for j in range(SIZE[1]):
                 if (len(self.World[i][j]) != 0):
                     element = self.World[i][j][len(self.World[i][j]) - 1]
                     if (isinstance(element, Creature)):
                         element.Print()
-                    elif (isinstance(element, Food)):
-                        element.Print([i, j])
+        
+        for position in changesPos:
+            if (len(self.World[position[0]][position[1]]) == 0):
+                self.World[position[0]][position[1]].append(Entourage(random.choice(ENTOURAGE_TYPES)))
+                break
+            element = self.World[position[0]][position[1]][len(self.World[position[0]][position[1]]) - 1]
+            if (isinstance(element, Food)):
+                element.Print([i, j])
+            elif (isinstance(element, Entourage)):
+                element.Print([i, j])
     
     def Print(self):
         for i in range(SIZE[0]):
             for j in range(SIZE[1]):
-                print('%s%s%s%s%s' % (pos(i + 1, j + 1), Fore.GREEN, Back.BLACK, Style.BRIGHT, ","), end='')
+                element = self.World[i][j][len(self.World[i][j]) - 1]
+                if (isinstance(element, Entourage)):
+                    element.Print([i, j])
+                elif (isinstance(element, Food)):
+                    element.Print([i, j])
         
         self.PrintObjects()
     
